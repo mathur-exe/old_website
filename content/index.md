@@ -7,3 +7,5 @@ I'm currently a bachlore's student at Department of Electronic and Communication
 ##### Research Interest
 TLDR: still exploring
 1. 
+2. 
+3. 
