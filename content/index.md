@@ -6,6 +6,7 @@ I'm currently a bachlore's student at Department of Electronic and Communication
 
 CHANGE: Adding Header Options
 CHANGE: Adding Header Options Trial 2
+CHANGE: Adding Header Options Trial 3
 
 ##### Research Interest
 TLDR: still exploring
