@@ -45,3 +45,7 @@ export {
   Breadcrumbs,
   Comments,
 }
+
+export function Link(arg0: { href: string; label: string }): import("./types").QuartzComponent {
+  throw new Error("Function not implemented.")
+}

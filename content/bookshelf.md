@@ -1,0 +1,3 @@
+- Algorithms to Live by
+- Black Swan
+- Life 3.0: Human in age of AI {ref: Audio Book}
