@@ -21,6 +21,9 @@ import RecentNotes from "./RecentNotes"
 import Breadcrumbs from "./Breadcrumbs"
 import Comments from "./Comments"
 
+import LinksHeader from "./LinksHeader"
+
+
 export {
   ArticleTitle,
   Content,
@@ -44,6 +47,7 @@ export {
   NotFound,
   Breadcrumbs,
   Comments,
+  LinksHeader,
 }
 
 export function Link(arg0: { href: string; label: string }): import("./types").QuartzComponent {
