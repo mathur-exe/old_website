@@ -11,56 +11,51 @@ $\text{memory} = \frac{\text{nr\_bits}}{8} \times \text{nr\_params}$
 **Symmetric Quantization**
 - The range of the original floating-point values is mapped to a symmetric range around zero in the quantized space. The highest absolute value ($\alpha$) is used for linear mapping around 0.
 - Formula for linear mapping around zero:
-  
-  $s = \frac{2^{b-1} - 1}{\alpha}$
-
-  $x_{\text{quantized}} = \text{round} \left( s \cdot x \right) \quad \forall \, b: \text{number of bits, } \alpha: \text{high absolute value, } x: \text{input}$
+	1. $s = \frac{2^{b-1} - 1}{\alpha} \quad \forall \qquad b: \text{number of bits, } \alpha: \text{high absolute value, }$
+	2. $x_{\text{quantized}} = \text{round} \left( s \cdot x \right) \quad \forall \qquad x: \text{input}$
 	
-	For example:
+- For example:
 	- $s = 127 / 10.8 = 11.76$
-	- $x_{\text{quantized}} = \text{round}(11.76 \cdot x)$
-
-- To retrieve the original FP32 value:
-  
-  $x_{\text{dequantized}} = \frac{[value]}{s}$
+	- $x_{\text{quantized}} = \text{round}(11.76 \cdot x)$ 
+- Dequantization to FP32: $x_{\text{dequantized}} = \frac{[value]}{s}$
 
 **Asymmetric Quantization**
 - The scaling is based on the min-max value, and as a result, the 0-value is shifted.
 - Here, [-127, 128] represents the min-max value of INT-8:
-  
-  $s = \frac{128 - (-127)}{\alpha - \beta}$
-
-  $Z = \text{round}\left(-s \cdot \beta \right) - 2^{b-1}$
-
-  $X_{\text{quantized}} = \text{round}\left(s \cdot X + Z \right)$
-  
-  $\forall \, s: \text{scale factor, } Z: \text{zero point, } (\alpha, \beta): \text{min-max value in FP}$
-
-	For example:
+	1.  $s = \frac{128 - (-127)}{\alpha - \beta} \qquad \forall \, \qquad s: \text{ scale factor}$
+	2. $Z = \text{round}\left(-s \cdot \beta \right) - 2^{b-1} \qquad \forall \qquad Z: \text{zero poin, } (\alpha, \beta): \text{min-max value in FP}$
+	3. $X_{\text{quantized}} = \text{round}\left(s \cdot X + Z \right)$
+	
+- For example:
 	- $s = \frac{255}{10.8 - (-7.59)} = 13.86$
 	- $Z = \text{round}(-13.86 \cdot -7.59) - 128 = -23$
 	- $X_{\text{quantized}} = \text{round}(13.86 \cdot X + -23)$
 
-- To dequantize:
-  
-  $X_{\text{dequantized}} = \frac{(\text{some value} - Z)}{s}$
+- Dequantization: $X_{\text{dequantized}} = \frac{(\text{some value} - Z)}{s}$
 
 **Range Mapping, Clipping and Calibration**
 - Issue with above approaches: outliers. Hence, we'll clip certain values.
 - If we were to map the full range of this vector, all small values would get mapped to the same lower-bit representation and lose their differentiating factor.
 
-$Y = w.x + b$
+> $Y = w.x + b$
+> 	- Biases are only a few million $\rightarrow$ higher precision such as INT16.
+> 	- Weights {billions} $\rightarrow$ being higher in number, the main effect of quantization is applied to the weights.
+> 	- Activation $\rightarrow$ updated after each hidden layer, and values are only known during inference.
 
-- Biases are only a few million $\rightarrow$ higher precision such as INT16.
-- Weights {billions} $\rightarrow$ being higher in number, the main effect of quantization is applied to the weights.
-- Activation $\rightarrow$ updated after each hidden layer, and values are only known during inference.
-
-	Broadly, methods of calibrating quantization of weights and activation:
+- Broadly, methods of calibrating quantization of weights and activation:
 	1. Post-Training Quantization (PTQ)
 	2. Quantization Aware Training (QAT)
 		- Quantization **during** training/fine-tuning
 
 ### Post-Training Quantization
+- Weight and activation are quantized post training. 
+- Quantization weights --> sym or asym
+- Quantizatio Activation --> Dynamic / Statuc
+
+| Dynamic Quantization                                                                                                                     | Static Quantization                                                                                                                             |
+|:---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| - This quantization is repeated for each every layer, hence, every layer has it's own separate z & s. Thus different quantization scheme | - instead of calculating for each layer, a calibration dataset is used by model to collect distribution and calculate ==*global*== Z & s values |
+| ``` calculate activation > calculate Z & s > quantize ```                                                                                | ```calibration dataset > calculate Z & s > quantization```                                                                                      |
 
 ### Quantization Aware Training
 
