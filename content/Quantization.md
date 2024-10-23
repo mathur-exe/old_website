@@ -13,7 +13,12 @@ $\text{memory} = \frac{\text{nr\_bits}}{8} \times \text{nr\_params}$
 - Formula for linear mapping around zero:
 	1. $s = \frac{2^{b-1} - 1}{\alpha} \quad \forall \qquad b: \text{number of bits, } \alpha: \text{high absolute value, }$
 	2. $x_{\text{quantized}} = \text{round} \left( s \cdot x \right) \quad \forall \qquad x: \text{input}$
-	
+
+| $s = \frac{2^{b-1} - 1}{\alpha}$                               | $\forall \qquad b: \text{number of bits, } \alpha: \text{high absolute value}$ |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| $x_{\text{quantized}} = \text{round} \left( s \cdot x \right)$ | $\forall \qquad x: \text{input}$                                               |
+|                                                                |                                                                                |
+
 - For example:
 	- $s = 127 / 10.8 = 11.76$
 	- $x_{\text{quantized}} = \text{round}(11.76 \cdot x)$ 
