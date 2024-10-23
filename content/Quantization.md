@@ -14,10 +14,11 @@ $\text{memory} = \frac{\text{nr\_bits}}{8} \times \text{nr\_params}$
 	1. $s = \frac{2^{b-1} - 1}{\alpha} \quad \forall \qquad b: \text{number of bits, } \alpha: \text{high absolute value, }$
 	2. $x_{\text{quantized}} = \text{round} \left( s \cdot x \right) \quad \forall \qquad x: \text{input}$
 
-| $s = \frac{2^{b-1} - 1}{\alpha}$                               | $\forall \qquad b: \text{number of bits, } \alpha: \text{high absolute value}$ |
-| -------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| $x_{\text{quantized}} = \text{round} \left( s \cdot x \right)$ | $\forall \qquad x: \text{input}$                                               |
 |                                                                |                                                                                |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| $s = \frac{2^{b-1} - 1}{\alpha}$                               | $\forall \qquad b: \text{number of bits, } \alpha: \text{high absolute value}$ |
+| $x_{\text{quantized}} = \text{round} \left( s \cdot x \right)$ | $\forall \qquad x: \text{input}$                                               |
+| $x_{\text{dequantized}} = \frac{[value]}{s}$                   | Dequantization to FP32                                                         |
 
 - For example:
 	- $s = 127 / 10.8 = 11.76$
@@ -30,7 +31,14 @@ $\text{memory} = \frac{\text{nr\_bits}}{8} \times \text{nr\_params}$
 	1.  $s = \frac{128 - (-127)}{\alpha - \beta} \qquad \forall \, \qquad s: \text{ scale factor}$
 	2. $Z = \text{round}\left(-s \cdot \beta \right) - 2^{b-1} \qquad \forall \qquad Z: \text{zero poin, } (\alpha, \beta): \text{min-max value in FP}$
 	3. $X_{\text{quantized}} = \text{round}\left(s \cdot X + Z \right)$
-	
+
+|                                                                  |                                                                                    |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| $s = \frac{128 - (-127)}{\alpha - \beta}$                        | $\forall \qquad s: \text{ scale factor}$                                           |
+| $Z = \text{round}\left(-s \cdot \beta \right) - 2^{b-1}$         | $\forall \qquad Z: \text{zero poin, } (\alpha, \beta): \text{min-max value in FP}$ |
+| $X_{\text{quantized}} = \text{round}\left(s \cdot X + Z \right)$ |                                                                                    |
+| $X_{\text{dequantized}} = \frac{(\text{some value} - Z)}{s}$     | Dequantization                                                                     |
+
 - For example:
 	- $s = \frac{255}{10.8 - (-7.59)} = 13.86$
 	- $Z = \text{round}(-13.86 \cdot -7.59) - 128 = -23$
