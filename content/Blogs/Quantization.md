@@ -15,6 +15,8 @@ $\text{memory} = \frac{\text{nr\_bits}}{8} \times \text{nr\_params}$
 | $x_{\text{quantized}} = \text{round} \left( s \cdot x \right)$ | $\forall \qquad x: \text{input}$                                               |
 |          $x_{\text{dequantized}} = \frac{[value]}{s}$          | Dequantization to FP32                                                         |
 
+![[Pasted image 20241023212217.png]]
+
 - For example:
 	- $s = 127 / 10.8 = 11.76$
 	- $x_{\text{quantized}} = \text{round}(11.76 \cdot x)$ 
@@ -29,6 +31,7 @@ $\text{memory} = \frac{\text{nr\_bits}}{8} \times \text{nr\_params}$
 |     $Z = \text{round}\left(-s \cdot \beta \right) - 2^{b-1}$     | $\forall \qquad Z: \text{zero poin, } (\alpha, \beta): \text{min-max value in FP}$ |
 | $X_{\text{quantized}} = \text{round}\left(s \cdot X + Z \right)$ |                                                                                    |
 |   $X_{\text{dequantized}} = \frac{(\text{some value} - Z)}{s}$   | Dequantization                                                                     |
+![[Pasted image 20241023212126.png]]
 
 - For example:
 	- $s = \frac{255}{10.8 - (-7.59)} = 13.86$
@@ -85,22 +88,74 @@ layer weights to inverse-Hessian > quantize (FP32 to INT4) > dequantize (INT4 to
 | $q = \frac{X_1 - X_1}{h_1}$ | Hessian-weighted quantization error |
 | $X_2 = X_2 + q \cdot h_2$   | Updated weights                     |
 - For Example:
-	```
-	Original weights                    Updated weights
-	------------------------------------------------------
-	|  0.5  |  0.3  |  0.1  |           |  0.5    |  0.4624  |  0.1203 |
-	| -0.2  |  0.6  |  0.4  |           | -0.2    |  0.6     |  0.4    |
-	|  0.1  | -0.4  |  0.8  |           |  0.1    | -0.4     |  0.8    |
-	------------------------------------------------------
-	```
+	![[Pasted image 20241023212411.png]]
+	![[Pasted image 20241023212336.png]]
+	
 	1. q = (0.5 - 0.297)/0.2 = 0.203
 	2. x2 = 0.3 + 0.203 * 0.8 =  0.4624
 	
 > Original Paper: https://arxiv.org/pdf/2210.17323
+>
 > YouTube video: https://www.youtube.com/watch?v=mii-xFaPCrA
 #### GGUF
+- Why GGUF? when we donot have enough VRAM to run full LLM on GPU despite GPTQ
+```
+Weight matrix > super block > sub block > sub block quantization > super block quantization
+```
+- Absmax Quantization: 
+	- Basic Formula: $X_{\text{quantized}} = S \cdot X$
+	- Scale Factor: $S$ is the max absolute value of wt in the block
+
+```
+Matrix:
+W = [ [ 0.5, -0.2,  0.8, -0.6 ],
+      [-0.1,  0.4, -0.7,  0.3 ],
+      [ 0.9, -0.4,  0.2, -0.5 ],
+      [ 0.7,  0.1, -0.3,  0.6 ] ]
+
+Super Block 1: [[ 0.5, -0.2,  0.8, -0.6 ],
+				[-0.1,  0.4, -0.7,  0.3 ]]
+
+Super Block 2: [ [ 0.9, -0.4,  0.2, -0.5 ],
+				  [ 0.7,  0.1, -0.3,  0.6 ] ]
+
+Sub Block 1: [[ 0.5, -0.2 ],
+			  [-0.1,  0.4 ] ]
+> Quantized Sub Block 1 = (1 / 0.5) * (Sub Block 1)
+                      = [[ 1, -0.4 ],
+                        [-0.2,  0.8 ]]
+
+Sub Block 2: [[ 0.8, -0.6 ],
+			  [-0.7,  0.3 ] ]
+> Quantized Sub Block 2 = (1 / 0.8) * (Sub Block 2)
+                      = [ [ 1, -0.75 ],
+                          [-0.875, 0.375 ] ]
+
+Sub Block 3: [[ 0.9, -0.4 ],
+			  [ 0.7,  0.1 ] ]
+> Quantized Sub Block 3 = (1 / 0.9) * (Sub Block 3)
+                      = [ [ 1, -0.44 ],
+                          [ 0.78,  0.11 ] ]
+
+
+Sub Block 4: [[ 0.2, -0.5 ],
+			  [-0.3,  0.6 ] ]
+> Quantized Sub Block 4 = (1 / 0.6) * [(Sub Block 4)
+                      = [ [ 0.33, -0.83 ],
+                          [-0.5,   1 ] ]
+
+Qunatization Super Block 1: 1
+Qunatization Super Block 2: 1
+
+Final Matrix:
+W_quantized = [ [  1,  -0.4,    1,  -0.75  ],
+                [-0.2,   0.8, -0.875,  0.375 ],
+                [  1,  -0.44,  0.33,  -0.83  ],
+                [0.78,  0.11,  -0.5,     1   ] ]
+```
 
 ### Quantization Aware Training
+==still studying==
 
 ##### Question
 Q] If the distance between two values on a number scale is large, it should imply greater precision, as there is more room for additional values between them.
