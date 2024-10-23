@@ -31,8 +31,8 @@ $\text{memory} = \frac{\text{nr\_bits}}{8} \times \text{nr\_params}$
 |     $Z = \text{round}\left(-s \cdot \beta \right) - 2^{b-1}$     | $\forall \qquad Z: \text{zero poin, } (\alpha, \beta): \text{min-max value in FP}$ |
 | $X_{\text{quantized}} = \text{round}\left(s \cdot X + Z \right)$ |                                                                                    |
 |   $X_{\text{dequantized}} = \frac{(\text{some value} - Z)}{s}$   | Dequantization                                                                     |
-![[Pasted image 20241023212126.png]]
 
+![[Pasted image 20241023212126.png]]
 - For example:
 	- $s = \frac{255}{10.8 - (-7.59)} = 13.86$
 	- $Z = \text{round}(-13.86 \cdot -7.59) - 128 = -23$
@@ -51,17 +51,6 @@ $\text{memory} = \frac{\text{nr\_bits}}{8} \times \text{nr\_params}$
 	1. Post-Training Quantization (PTQ)
 	2. Quantization Aware Training (QAT)
 		- Quantization **during** training/fine-tuning
-
-### Post-Training Quantization
-- Weight and activation are quantized post training. 
-- Quantization weights --> sym or asym
-- Quantizatio Activation --> Dynamic / Statuc
-
-| Dynamic Quantization                                                                                                                     | Static Quantization                                                                                                                             |
-| :--------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
-| - This quantization is repeated for each every layer, hence, every layer has it's own separate z & s. Thus different quantization scheme | - instead of calculating for each layer, a calibration dataset is used by model to collect distribution and calculate ==*global*== Z & s values |
-| ``` calculate activation > calculate Z & s > quantize ```                                                                                | ```calibration dataset > calculate Z & s > quantization```                                                                                      |
-
 ### Post-Training Quantization
 - Weight and activation are quantized post training. 
 - Quantization weights --> sym or asym
@@ -95,7 +84,7 @@ layer weights to inverse-Hessian > quantize (FP32 to INT4) > dequantize (INT4 to
 	2. x2 = 0.3 + 0.203 * 0.8 =  0.4624
 	
 > Original Paper: https://arxiv.org/pdf/2210.17323
->
+> 
 > YouTube video: https://www.youtube.com/watch?v=mii-xFaPCrA
 #### GGUF
 - Why GGUF? when we donot have enough VRAM to run full LLM on GPU despite GPTQ
