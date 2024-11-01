@@ -10,10 +10,10 @@ TLDR: still exploring
 2. Reinforcement Learning
 
 ##### ML
-[[Do DL models overfit?]]
-[[Neural Collapse & Long-Tail in NN]]
+- [[Do DL models overfit?]]
+- [[Neural Collapse & Long-Tail in NN]]
 ##### LLM Essentials
-[[Quantization]]
+- [[Quantization]]
 
 
 
