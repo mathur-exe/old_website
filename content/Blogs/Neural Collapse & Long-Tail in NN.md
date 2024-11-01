@@ -3,7 +3,6 @@
 2. [Understanding Imbalanced Semantic Segmentation Through Neural Collapse](https://arxiv.org/abs/2301.01100)
 3. [Combating Representation Learning Disparity with Geometric Harmonization](https://arxiv.org/abs/2310.17622)
 4. [Exploring Deep Neural Networks via Layer-Peeled Model: Minority Collapse in Imbalanced Training](https://arxiv.org/abs/2101.12699)
-- 
 ##### Language Models
 Twitter
   - https://x.com/_jasonwei/status/1660709485005144064
@@ -34,13 +33,17 @@ Other Reference
 
 ##### Main Approach
 - Lemma 1: Regularising feature centers in segmentation model into simplex ETF relieves imbalance dilemma for semantic segmentation
+	
 	$$\mathbf{M} = \sqrt{\frac{K}{K - 1}} \, \mathbf{U} \left( \mathbf{I}_K - \frac{1}{K} \mathbf{1}_K \mathbf{1}_K^{\top} \right)$$
-		$\forall \qquad K$: number of classes in task (seg, cls)
-		 $\sqrt{\frac{K}{K - 1}}$: scaling factor to maintain consistent length across all weight vetors
-		 $U, \ ( \mathbf{I}_K ), \ ( \mathbf{I}_K )$ are rotation vector, identity vector (K x K) and all one vector of dim-K
+	$\forall \qquad K$: number of classes in task (seg, cls)
+	
+	$\sqrt{\frac{K}{K - 1}}$: scaling factor to maintain consistent length across all weight vetors
+	
+	$U, \ ( \mathbf{I}_K ), \ ( \mathbf{I}_K )$ are rotation vector, identity vector (K x K) and all one vector of dim-K
 - Center Collapse Regularisation
 	- The framework is of two parts: **point/pixel recognition branch** and **center regularization branch** 
 	- In this branch, $\mathbf{z}_i$ (feature vector) of each class and compute $\mathbf{z}_k$ (feature center) to generate center labels ($\mathbf{y}_k$) of all classes based on ground truth y
+		
 		$$\overline{z}_k = \frac{1}{n_k} \sum_{y_i = k}^{n_k} z_i, \quad \overline{y}_k = y_i = k \qquad \forall \qquad \mathbf{n}_k \text{ is the number of samples in Z belonging to k-th class})$$
 - Final Loss function 
 	1. CR loss: $\mathcal{L}_{\text{CR}}(\overline{\mathbf{Z}}, \mathbf{W}^*) = - \sum_{k=1}^{K} \log \left( \frac{\exp(\overline{\mathbf{z}}_k^{\top} \mathbf{w}_k^*)}{\sum_{k'=1}^{K} \exp(\overline{\mathbf{z}}_{k'}^{\top} \mathbf{w}_{k'}^*)} \right).$
@@ -49,7 +52,9 @@ Other Reference
 
 ##### Theoretical Support
 1. Gradient wrt center classifier
+
 		$$\frac{\partial \mathcal{L}_{\text{CR}}}{\partial \mathbf{w}_k} = \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \overline{\mathbf{z}}_k + \sum_{k' \neq k}^{K-1} p_k \left( \overline{\mathbf{z}}_{k'} \right) \overline{\mathbf{z}}_{k'},$$
+		
 		$$\qquad = \underbrace{\sum_{y_i = k}^{n_k} \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \frac{\mathbf{z}_i}{n_k}}_{\text{within-class}} \underbrace{\sum_{k' \neq k}^{K - 1} \sum_{y_j = k'}^{n_k} p_k \left( \overline{\mathbf{z}}_{k'} \right) \frac{\mathbf{z}_j}{n_{k'}}}_{\text{between-class}}$$
 	+ This equation is imbalanced and decomposes into 2 part: within-class and between-class. Hence, the gradients of some minor classes can be likely swallowed by other classes. This can be resolved if the weights of center classifier are fixed
 2. Gradient wrt Pixel feature
