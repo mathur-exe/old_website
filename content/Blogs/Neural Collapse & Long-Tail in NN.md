@@ -34,8 +34,11 @@ Other Reference
 ##### Main Approach
 - Lemma 1: Regularising feature centers in segmentation model into simplex ETF relieves imbalance dilemma for semantic segmentation
 
+<div align="center">
 
-	$$\mathbf{M} = \sqrt{\frac{K}{K - 1}} \, \mathbf{U} \left( \mathbf{I}_K - \frac{1}{K} \mathbf{1}_K \mathbf{1}_K^{\top} \right)$$
+$$\mathbf{M} = \sqrt{\frac{K}{K - 1}} \, \mathbf{U} \left( \mathbf{I}_K - \frac{1}{K} \mathbf{1}_K \mathbf{1}_K^{\top} \right)$$
+
+</div>
 
 	&nbsp;&nbsp;&nbsp;&nbsp;$\forall \qquad K$: number of classes in task (seg, cls)
 
@@ -49,7 +52,11 @@ Other Reference
 	- In this branch, $\mathbf{z}_i$ (feature vector) of each class and compute $\mathbf{z}_k$ (feature center) to generate center labels ($\mathbf{y}_k$) of all classes based on ground truth y
 		
 		
+		<div align="center">
+
 		$$\overline{z}_k = \frac{1}{n_k} \sum_{y_i = k}^{n_k} z_i, \quad \overline{y}_k = y_i = k \qquad \forall \qquad \mathbf{n}_k \text{ is the number of samples in Z belonging to k-th class})$$
+
+		</div>
 
 
 - Final Loss function 
