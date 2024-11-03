@@ -23,8 +23,7 @@ Other Reference
 	- [NC3] Self Duality: class-mean and linear classification (used to map features to class labels) converge to same structure. This alignment is known as self-duality and more symmetric decision boundary
 	- [NC4] Nearest Class Center Simplification (NCC): each data point is classified by finding nearest class-mean in terms of euclidean distance
 
-#### Neural Collapse in Semantic Segmentation
-##### Neural Collapse in SS vs Classification
+#### Neural Collapse in Semantic Segmentation vs Classification
 - Symmetric ETF of NC does not hold in semantic segmentation for both feature centers and classifiers. This is because 
 	- Classes in classification have low correlation while in semantic segmentation are contextually correlated 
 	- NC observed in image recognition task relies on balance class distribution of training dataset and is broken when data imbalance emerges [ref 4]
@@ -32,7 +31,7 @@ Other Reference
 	![[Pasted image 20241102004806.png]]
 
 ##### Main Approach
-**Lemma 1**: Regularising feature centers in segmentation model into simplex ETF relieves imbalance dilemma for semantic segmentation
+###### Lemma 1: Regularising feature centers in segmentation model into simplex ETF relieves imbalance dilemma for semantic segmentation
 
 	$$
 	\begin{align}
@@ -48,7 +47,7 @@ Other Reference
 	- $\mathbf{1}_K$ is all one vector of dim-K
 
 
-**Center Collapse Regularisation**
+###### Center Collapse Regularisation
 	- The framework is of two parts: **point/pixel recognition branch** and **center regularization branch** 
 	- In this branch, $\mathbf{z}_i$ (feature vector) of each class and compute $\mathbf{z}_k$ (feature center) to generate center labels ($\mathbf{y}_k$) of all classes based on ground truth y
 		
@@ -63,7 +62,7 @@ Other Reference
 		- $\mathbf{n}_k$ is the number of samples in Z belonging to k-th class
 
 
-**Final Loss function**
+###### Final Loss function
 	1. CR loss: $\mathcal{L}_{\text{CR}}(\overline{\mathbf{Z}}, \mathbf{W}^*) = - \sum_{k=1}^{K} \log \left( \frac{\exp(\overline{\mathbf{z}}_k^{\top} \mathbf{w}_k^*)}{\sum_{k'=1}^{K} \exp(\overline{\mathbf{z}}_{k'}^{\top} \mathbf{w}_{k'}^*)} \right).$
 	2. Primary Loss (Pixel-wise CE): $\mathcal{L}_{PR}(Z, y) = - \sum_{i} \sum_{k=1}^{K} y_{i,k} \log \left( p_{i,k} \right)$
 	3. Total Loss: $\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{PR}}(\mathbf{Z}, \mathbf{y}) + \lambda \mathcal{L}_{\text{CR}}(\overline{\mathbf{Z}}, \mathbf{W}^*)$
@@ -74,7 +73,7 @@ Other Reference
 	$$
 	\begin{align}
 	\frac{\partial \mathcal{L}_{\text{CR}}}{\partial \mathbf{w}_k} = \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \overline{\mathbf{z}}_k + \sum_{k' \neq k}^{K-1} p_k \left( \overline{\mathbf{z}}_{k'} \right) \overline{\mathbf{z}}_{k'}
-	\\ = \underbrace{\sum_{y_i = k}^{n_k} \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \frac{\mathbf{z}_i}{n_k}}_{\text{within-class}} \underbrace{\sum_{k' \neq k}^{K - 1} \sum_{y_j = k'}^{n_k} p_k \left( \overline{\mathbf{z}}_{k'} \right) \frac{\mathbf{z}_j}{n_{k'}}}_{\text{between-class}}
+	\\ = \underbrace{\sum_{y_i = k}^{n_k} \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \frac{\mathbf{z}_i}{n_k}}_{\text{within-class}} \\ \underbrace{\sum_{k' \neq k}^{K - 1} \sum_{y_j = k'}^{n_k} p_k \left( \overline{\mathbf{z}}_{k'} \right) \frac{\mathbf{z}_j}{n_{k'}}}_{\text{between-class}}
 	\end{align}
 	$$
 
