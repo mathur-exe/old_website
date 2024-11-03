@@ -38,13 +38,13 @@ Other Reference
 	$$\mathbf{M} = \sqrt{\frac{K}{K - 1}} \, \mathbf{U} \left( \mathbf{I}_K - \frac{1}{K} \mathbf{1}_K \mathbf{1}_K^{\top} \right)$$
 	
 	
-	$\forall \qquad K$: number of classes in task (seg, cls)
+			$\forall \qquad K$: number of classes in task (seg, cls)
 
 
-	$\sqrt{\frac{K}{K - 1}}$: scaling factor to maintain consistent length across all weight vetors
-	
+			$\sqrt{\frac{K}{K - 1}}$: scaling factor to maintain consistent length across all weight vetors
+			
 
-	$U, \ ( \mathbf{I}_K ), \ ( \mathbf{I}_K )$ are rotation vector, identity vector (K x K) and all one vector of dim-K
+			$U, \ ( \mathbf{I}_K ), \ ( \mathbf{I}_K )$ are rotation vector, identity vector (K x K) and all one vector of dim-K
 
 
 - Center Collapse Regularisation
