@@ -32,7 +32,7 @@ Other Reference
 	![[Pasted image 20241102004806.png]]
 
 ##### Main Approach
-- Lemma 1: Regularising feature centers in segmentation model into simplex ETF relieves imbalance dilemma for semantic segmentation
+**Lemma 1**: Regularising feature centers in segmentation model into simplex ETF relieves imbalance dilemma for semantic segmentation
 
 	$$
 	\begin{align}
@@ -48,7 +48,7 @@ Other Reference
 	- $\mathbf{1}_K$ is all one vector of dim-K
 
 
-- Center Collapse Regularisation
+**Center Collapse Regularisation**
 	- The framework is of two parts: **point/pixel recognition branch** and **center regularization branch** 
 	- In this branch, $\mathbf{z}_i$ (feature vector) of each class and compute $\mathbf{z}_k$ (feature center) to generate center labels ($\mathbf{y}_k$) of all classes based on ground truth y
 		
@@ -63,7 +63,7 @@ Other Reference
 		- $\mathbf{n}_k$ is the number of samples in Z belonging to k-th class
 
 
-- Final Loss function 
+**Final Loss function**
 	1. CR loss: $\mathcal{L}_{\text{CR}}(\overline{\mathbf{Z}}, \mathbf{W}^*) = - \sum_{k=1}^{K} \log \left( \frac{\exp(\overline{\mathbf{z}}_k^{\top} \mathbf{w}_k^*)}{\sum_{k'=1}^{K} \exp(\overline{\mathbf{z}}_{k'}^{\top} \mathbf{w}_{k'}^*)} \right).$
 	2. Primary Loss (Pixel-wise CE): $\mathcal{L}_{PR}(Z, y) = - \sum_{i} \sum_{k=1}^{K} y_{i,k} \log \left( p_{i,k} \right)$
 	3. Total Loss: $\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{PR}}(\mathbf{Z}, \mathbf{y}) + \lambda \mathcal{L}_{\text{CR}}(\overline{\mathbf{Z}}, \mathbf{W}^*)$
