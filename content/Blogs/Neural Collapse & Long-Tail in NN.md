@@ -51,7 +51,10 @@ Other Reference
 	- The framework is of two parts: **point/pixel recognition branch** and **center regularization branch** 
 	- In this branch, $\mathbf{z}_i$ (feature vector) of each class and compute $\mathbf{z}_k$ (feature center) to generate center labels ($\mathbf{y}_k$) of all classes based on ground truth y
 		
+		
 		$$\overline{z}_k = \frac{1}{n_k} \sum_{y_i = k}^{n_k} z_i, \quad \overline{y}_k = y_i = k \qquad \forall \qquad \mathbf{n}_k \text{ is the number of samples in Z belonging to k-th class})$$
+
+
 - Final Loss function 
 	1. CR loss: $\mathcal{L}_{\text{CR}}(\overline{\mathbf{Z}}, \mathbf{W}^*) = - \sum_{k=1}^{K} \log \left( \frac{\exp(\overline{\mathbf{z}}_k^{\top} \mathbf{w}_k^*)}{\sum_{k'=1}^{K} \exp(\overline{\mathbf{z}}_{k'}^{\top} \mathbf{w}_{k'}^*)} \right).$
 	2. Primary Loss (Pixel-wise CE): $\mathcal{L}_{PR}(Z, y) = - \sum_{i} \sum_{k=1}^{K} y_{i,k} \log \left( p_{i,k} \right)$
@@ -60,9 +63,12 @@ Other Reference
 ##### Theoretical Support
 1. Gradient wrt center classifier
 
-		$$\frac{\partial \mathcal{L}_{\text{CR}}}{\partial \mathbf{w}_k} = \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \overline{\mathbf{z}}_k + \sum_{k' \neq k}^{K-1} p_k \left( \overline{\mathbf{z}}_{k'} \right) \overline{\mathbf{z}}_{k'},$$
+		
+		$$\frac{\partial \mathcal{L}_{\text{CR}}}{\partial \mathbf{w}_k} = \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \overline{\mathbf{z}}_k + \sum_{k' \neq k}^{K-1} p_k \left( \overline{\mathbf{z}}_{k'} \right) \overline{\mathbf{z}}_{k'}$$
+		
 		
 		$$\qquad = \underbrace{\sum_{y_i = k}^{n_k} \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \frac{\mathbf{z}_i}{n_k}}_{\text{within-class}} \underbrace{\sum_{k' \neq k}^{K - 1} \sum_{y_j = k'}^{n_k} p_k \left( \overline{\mathbf{z}}_{k'} \right) \frac{\mathbf{z}_j}{n_{k'}}}_{\text{between-class}}$$
+
 	+ This equation is imbalanced and decomposes into 2 part: within-class and between-class. Hence, the gradients of some minor classes can be likely swallowed by other classes. This can be resolved if the weights of center classifier are fixed
 2. Gradient wrt Pixel feature
 	- ETF structured classifier enables the gradient transfer between minor classes and obtains better discrimination among minor classes. Thus it avoids the features of minor classes converging in a close position
