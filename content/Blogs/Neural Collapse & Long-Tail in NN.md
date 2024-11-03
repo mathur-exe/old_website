@@ -36,6 +36,8 @@ Other Reference
 
 
 	$$\mathbf{M} = \sqrt{\frac{K}{K - 1}} \, \mathbf{U} \left( \mathbf{I}_K - \frac{1}{K} \mathbf{1}_K \mathbf{1}_K^{\top} \right)$$
+	
+	
 	$\forall \qquad K$: number of classes in task (seg, cls)
 
 
@@ -44,7 +46,7 @@ Other Reference
 
 	$U, \ ( \mathbf{I}_K ), \ ( \mathbf{I}_K )$ are rotation vector, identity vector (K x K) and all one vector of dim-K
 
-	
+
 - Center Collapse Regularisation
 	- The framework is of two parts: **point/pixel recognition branch** and **center regularization branch** 
 	- In this branch, $\mathbf{z}_i$ (feature vector) of each class and compute $\mathbf{z}_k$ (feature center) to generate center labels ($\mathbf{y}_k$) of all classes based on ground truth y
