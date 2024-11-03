@@ -34,29 +34,33 @@ Other Reference
 ##### Main Approach
 - Lemma 1: Regularising feature centers in segmentation model into simplex ETF relieves imbalance dilemma for semantic segmentation
 
-<div align="center">
+	$$
+	\begin{align}
+	\mathbf{M} = \sqrt{\frac{K}{K - 1}} \, \mathbf{U} \left( \mathbf{I}_K - \frac{1}{K} \mathbf{1}_K \mathbf{1}_K^{\top} \right)
+	\end{align}
+	$$
 
-$$\mathbf{M} = \sqrt{\frac{K}{K - 1}} \, \mathbf{U} \left( \mathbf{I}_K - \frac{1}{K} \mathbf{1}_K \mathbf{1}_K^{\top} \right)$$
-
-</div>
-
-	&nbsp;&nbsp;&nbsp;&nbsp;$\forall \qquad K$: number of classes in task (seg, cls)
-
-	&nbsp;&nbsp;&nbsp;&nbsp;$\sqrt{\frac{K}{K - 1}}$: scaling factor to maintain consistent length across all weight vetors
-
-	&nbsp;&nbsp;&nbsp;&nbsp;$U, \ ( \mathbf{I}_K ), \ ( \mathbf{I}_K )$ are rotation vector, identity vector (K x K) and all one vector of dim-K
+	where:
+	- $K$ is the number of classes in task (seg, cls)
+	- $\sqrt{\frac{K}{K - 1}}$ is scaling factor to maintain consistent length across all weight vetors
+	- $\mathbf{U}$ is rotation vector
+	- $\mathbf{I}_K$ is identity vector (K x K)
+	- $\mathbf{1}_K$ is all one vector of dim-K
 
 
 - Center Collapse Regularisation
 	- The framework is of two parts: **point/pixel recognition branch** and **center regularization branch** 
 	- In this branch, $\mathbf{z}_i$ (feature vector) of each class and compute $\mathbf{z}_k$ (feature center) to generate center labels ($\mathbf{y}_k$) of all classes based on ground truth y
 		
-		
-		<div align="center">
 
-		$$\overline{z}_k = \frac{1}{n_k} \sum_{y_i = k}^{n_k} z_i, \quad \overline{y}_k = y_i = k \qquad \forall \qquad \mathbf{n}_k \text{ is the number of samples in Z belonging to k-th class})$$
+		$$
+		\begin{align}
+		\overline{z}_k = \frac{1}{n_k} \sum_{y_i = k}^{n_k} z_i, \quad \overline{y}_k = y_i = k
+		\end{align}
+		$$
 
-		</div>
+		where:
+		- $\mathbf{n}_k$ is the number of samples in Z belonging to k-th class
 
 
 - Final Loss function 
@@ -67,11 +71,12 @@ $$\mathbf{M} = \sqrt{\frac{K}{K - 1}} \, \mathbf{U} \left( \mathbf{I}_K - \frac{
 ##### Theoretical Support
 1. Gradient wrt center classifier
 
-		
-		$$\frac{\partial \mathcal{L}_{\text{CR}}}{\partial \mathbf{w}_k} = \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \overline{\mathbf{z}}_k + \sum_{k' \neq k}^{K-1} p_k \left( \overline{\mathbf{z}}_{k'} \right) \overline{\mathbf{z}}_{k'}$$
-		
-
-		$$\qquad = \underbrace{\sum_{y_i = k}^{n_k} \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \frac{\mathbf{z}_i}{n_k}}_{\text{within-class}} \underbrace{\sum_{k' \neq k}^{K - 1} \sum_{y_j = k'}^{n_k} p_k \left( \overline{\mathbf{z}}_{k'} \right) \frac{\mathbf{z}_j}{n_{k'}}}_{\text{between-class}}$$
+	$$
+	\begin{align}
+	\frac{\partial \mathcal{L}_{\text{CR}}}{\partial \mathbf{w}_k} = \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \overline{\mathbf{z}}_k + \sum_{k' \neq k}^{K-1} p_k \left( \overline{\mathbf{z}}_{k'} \right) \overline{\mathbf{z}}_{k'}
+	\\ = \underbrace{\sum_{y_i = k}^{n_k} \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \frac{\mathbf{z}_i}{n_k}}_{\text{within-class}} \underbrace{\sum_{k' \neq k}^{K - 1} \sum_{y_j = k'}^{n_k} p_k \left( \overline{\mathbf{z}}_{k'} \right) \frac{\mathbf{z}_j}{n_{k'}}}_{\text{between-class}}
+	\end{align}
+	$$
 
 	+ This equation is imbalanced and decomposes into 2 part: within-class and between-class. Hence, the gradients of some minor classes can be likely swallowed by other classes. This can be resolved if the weights of center classifier are fixed
 2. Gradient wrt Pixel feature
