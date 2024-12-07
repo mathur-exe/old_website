@@ -1,8 +1,13 @@
-<p align="center">
-  <img src="images/profile_picture.jpg" alt="Gaurang Mathur" width="360" style="display: block; margin: auto;">
-</p>
-
-Hey there 👋 I'm Gaurang | 22, I work on Agents and Language Models (RAG, Knowledge Graphs) in Applied Research at Raytheon Technologies. My board research interests include: Agentic AI, Mechanistic Interpretability, and fundamental deep learning. 
+<div style="display: flex; align-items: center;">
+  <div style="flex: 1; text-align: center;">
+    <img src="images/profile_picture.jpg" alt="Gaurang Mathur" width="300" style="border-radius: 10px;">
+  </div>
+  <div style="flex: 2; margin-left: 20px;">
+    <p>
+      Hey there 👋 I'm Gaurang | 22, I work on Agents and Language Models (RAG, Knowledge Graphs) in Applied Research at Raytheon Technologies. My board research interests include: Agentic AI, Mechanistic Interpretability, and fundamental deep learning.
+    </p>
+  </div>
+</div>
 
 ###### Previous Experience
 1. **ML Intern @ Raytheon Technology**: Worked on improving interpretability of SAR data and fusing them with multispectral and optical images.
