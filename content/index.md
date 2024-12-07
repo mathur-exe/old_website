@@ -3,7 +3,7 @@
 </div>
 
 ## Hey there 👋
-I'm **Gaurang Mathur**, a 22-year-old Machine Learning Engineer at [Raytheon Technologies](https://www.rtx.com/raytheon). I specialize in Agents and Language Models (RAG, Knowledge Graphs) within Applied Research. My broad research interests encompass Agentic AI, Mechanistic Interpretability, and fundamental Deep Learning.
+I'm **Gaurang** | 22. I work on Agents and Language Models (RAG, Knowledge Graphs) at [Raytheon Technologies](https://www.rtx.com/raytheon).  My broad research interests encompass Agentic AI, Mechanistic Interpretability, and fundamental Deep Learning.
 
 ##### Why this website?
 I created to website to document my research and learning; or anything I found interesting. Hence, I'm still putting things in place but here are a few of my blog posts:
