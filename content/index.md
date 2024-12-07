@@ -1,13 +1,10 @@
-<div style="display: flex; align-items: center;">
-  <div style="flex: 1; text-align: center;">
-    <img src="images/profile_picture.jpg" alt="Gaurang Mathur" width="300" style="border-radius: 10px;">
-  </div>
-  <div style="flex: 2; margin-left: 20px;">
-    <p>
-      Hey there 👋 I'm Gaurang | 22, I work on Agents and Language Models (RAG, Knowledge Graphs) in Applied Research at Raytheon Technologies. My board research interests include: Agentic AI, Mechanistic Interpretability, and fundamental deep learning.
-    </p>
-  </div>
+<div style="text-align: center;">
+  <img src="images/profile_picture.jpg" alt="Gaurang Mathur" width="200" style="display: block; margin: auto;">
+  <p>MLE @ Raytheon</p>
 </div>
+
+## Hey there 👋
+I'm **Gaurang Mathur**, a 22-year-old Machine Learning Engineer at [Raytheon Technologies](https://www.rtx.com/raytheon). I specialize in Agents and Language Models (RAG, Knowledge Graphs) within Applied Research. My broad research interests encompass Agentic AI, Mechanistic Interpretability, and fundamental Deep Learning.
 
 ###### Previous Experience
 1. **ML Intern @ Raytheon Technology**: Worked on improving interpretability of SAR data and fusing them with multispectral and optical images.
@@ -21,12 +18,12 @@
 ##### Why this website?
 I created to website to document my research and learning; or anything I found interesting. Hence, I'm still putting things in place but here are a few of my blog posts:
 
-* [[BackPropogation: Math & Intution]]()
-* [Neural Collapse & Long-Tail in NN]()
-* [[Agents: Architecture and Imlementation (from scratch)]]()
-* [Do DL models overfit?]()
-* [[Controls: AODS & Thrust Vectoring for sounding rockets]]()
-* [[SAR: Interpretability & Fusion]]()
+* BackPropogation: Math & Intution
+* Neural Collapse & Long-Tail in NN
+* Agents: Architecture and Imlementation (from scratch)
+* Do DL models overfit?
+* Controls: AODS & Thrust Vectoring for sounding rockets
+* SAR: Interpretability & Fusion
 
 ##### Contact
-I'm excited to discuss/collaborate on any ML, Math, Computing, or Space related topics. The best way to reach out to me is via [gmathur1993@gmail.com](mailto:gmathur1993@gmail.com) but you can also find me on other platforms [LinkedIn](https://www.linkedin.com/in/gaurang-mathur/), [Twitter](https://twitter.com/gaurang_mathur)
+I'm excited to discuss/collaborate on any ML, Math, Computing, or Space related topics. The best way to reach out to me is via [gmathur1993@gmail.com](mailto:gmathur1993@gmail.com) but you can also find me on other platforms [LinkedIn](https://www.linkedin.com/in/gaurang-mathur-748988175/), [Twitter](https://x.com/gaurang__mathur)
