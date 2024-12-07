@@ -33,33 +33,32 @@ Other Reference
 ##### Main Approach
 ###### Lemma 1: Regularising feature centers in segmentation model into simplex ETF relieves imbalance dilemma for semantic segmentation
 
+$$
+\begin{align}
+\mathbf{M} = \sqrt{\frac{K}{K - 1}} \, \mathbf{U} \left( \mathbf{I}_K - \frac{1}{K} \mathbf{1}_K \mathbf{1}_K^{\top} \right)
+\end{align}
+$$
+
+where:
+- $K$ is the number of classes in task (seg, cls)
+- $\sqrt{\frac{K}{K - 1}}$ is scaling factor to maintain consistent length across all weight vetors
+- $\mathbf{U}$ is rotation vector
+- $\mathbf{I}_K$ is identity vector (K x K)
+- $\mathbf{1}_K$ is all one vector of dim-K
+
+
+###### Center Collapse Regularisation
+- The framework is of two parts: **point/pixel recognition branch** and **center regularization branch** 
+- In this branch, $\mathbf{z}_i$ (feature vector) of each class and compute $\mathbf{z}_k$ (feature center) to generate center labels ($\mathbf{y}_k$) of all classes based on ground truth y
+		
 	$$
 	\begin{align}
-	\mathbf{M} = \sqrt{\frac{K}{K - 1}} \, \mathbf{U} \left( \mathbf{I}_K - \frac{1}{K} \mathbf{1}_K \mathbf{1}_K^{\top} \right)
+	\overline{z}_k = \frac{1}{n_k} \sum_{y_i = k}^{n_k} z_i, \quad \overline{y}_k = y_i = k
 	\end{align}
 	$$
 
 	where:
-	- $K$ is the number of classes in task (seg, cls)
-	- $\sqrt{\frac{K}{K - 1}}$ is scaling factor to maintain consistent length across all weight vetors
-	- $\mathbf{U}$ is rotation vector
-	- $\mathbf{I}_K$ is identity vector (K x K)
-	- $\mathbf{1}_K$ is all one vector of dim-K
-
-
-###### Center Collapse Regularisation
-	- The framework is of two parts: **point/pixel recognition branch** and **center regularization branch** 
-	- In this branch, $\mathbf{z}_i$ (feature vector) of each class and compute $\mathbf{z}_k$ (feature center) to generate center labels ($\mathbf{y}_k$) of all classes based on ground truth y
-		
-
-		$$
-		\begin{align}
-		\overline{z}_k = \frac{1}{n_k} \sum_{y_i = k}^{n_k} z_i, \quad \overline{y}_k = y_i = k
-		\end{align}
-		$$
-
-		where:
-		- $\mathbf{n}_k$ is the number of samples in Z belonging to k-th class
+	- $\mathbf{n}_k$ is the number of samples in Z belonging to k-th class
 
 
 ###### Final Loss function
@@ -73,7 +72,7 @@ Other Reference
 	$$
 	\begin{align}
 	\frac{\partial \mathcal{L}_{\text{CR}}}{\partial \mathbf{w}_k} = \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \overline{\mathbf{z}}_k + \sum_{k' \neq k}^{K-1} p_k \left( \overline{\mathbf{z}}_{k'} \right) \overline{\mathbf{z}}_{k'}
-	\\ = \underbrace{\sum_{y_i = k}^{n_k} \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \frac{\mathbf{z}_i}{n_k}}_{\text{within-class}} \\ \underbrace{\sum_{k' \neq k}^{K - 1} \sum_{y_j = k'}^{n_k} p_k \left( \overline{\mathbf{z}}_{k'} \right) \frac{\mathbf{z}_j}{n_{k'}}}_{\text{between-class}}
+	\ = \underbrace{\sum_{y_i = k}^{n_k} \left( p_k \left( \overline{\mathbf{z}}_k \right) - 1 \right) \frac{\mathbf{z}_i}{n_k}}_{\text{within-class}} \\ \underbrace{\sum_{k' \neq k}^{K - 1} \sum_{y_j = k'}^{n_k} p_k \left( \overline{\mathbf{z}}_{k'} \right) \frac{\mathbf{z}_j}{n_{k'}}}_{\text{between-class}}
 	\end{align}
 	$$
 
