@@ -1,3 +1,7 @@
+---
+title: Gaurang's Website
+---
+
 <div style="text-align: center;">
   <img src="images/profile_picture.jpg" alt="Gaurang Mathur" width="200" style="display: block; margin: auto;">
 </div>
